@@ -508,8 +508,22 @@ void ImageBrighten(Image img, double factor)
 /// On failure, returns NULL and errno/errCause are set accordingly.
 Image ImageRotate(Image img)
 { ///
+  /// https://medium.com/enjoy-algorithm/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction-6326e80bb211
   assert(img != NULL);
   // Insert your code here!
+  int w = img->width;
+  int h = img->height;
+  Image img2 = ImageCreate(h, w, img->maxval);
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      uint8 pixel = ImageGetPixel(img, i, j);
+      ImageSetPixel(img2, j, w - i - 1, pixel);
+    }
+  }
+
+  return img2;
 }
 
 /// Mirror an image = flip left-right.
@@ -523,6 +537,18 @@ Image ImageMirror(Image img)
 { ///
   assert(img != NULL);
   // Insert your code here!
+  int w = img->width;
+  int h = img->height;
+  Image img2 = ImageCreate(w, h, img->maxval);
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+
+      uint8 pixel = ImageGetPixel(img, i, j);
+      ImageSetPixel(img2, w - i - 1, j, pixel);
+    }
+  }
 }
 
 /// Crop a rectangular subimage from img.
