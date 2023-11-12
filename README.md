@@ -56,7 +56,7 @@ Sugere-se o desenvolvimento progressivo pela seguinte ordem:
 6. Completar `ImageValidRect`.
 7. Completar `ImageMirror`, `ImageRotate`.
 8. Completar `ImageCrop`, `ImagePaste` e `ImageBlend`.
-9. Completar `ImageMatchSubImage` e `ImageLocateSubImage`.
+9. Completar `ImageMatchSubImage` e ` `.
 10. Completar `ImageBlur`.
 
 Pode executar `make test1`, `make test2`, etc.

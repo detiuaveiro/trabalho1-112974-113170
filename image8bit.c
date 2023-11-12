@@ -10,7 +10,7 @@
 /// 2013, 2023
 
 // Student authors (fill in below):
-// NMec:  Name:
+// NMec:   Name:
 // 
 // 
 // 
@@ -44,6 +44,7 @@
 
 // Maximum value you can store in a pixel (maximum maxval accepted)
 const uint8 PixMax = 255;
+
 
 // Internal structure for storing 8-bit graymap images
 struct image {
@@ -167,11 +168,34 @@ void ImageInit(void) { ///
 /// On success, a new image is returned.
 /// (The caller is responsible for destroying the returned image!)
 /// On failure, returns NULL and errno/errCause are set accordingly.
+
+//TODO Estudar a forma como os erros vao ser desenvolvidos
 Image ImageCreate(int width, int height, uint8 maxval) { ///
+
   assert (width >= 0);
   assert (height >= 0);
   assert (0 < maxval && maxval <= PixMax);
+
   // Insert your code here!
+  Image i = (Image) malloc(sizeof(*i));
+
+  if(i == NULL){
+    check(i==NULL,"NAO CONSEGUI ALOCAR MEMORIA");// ALTERAR
+    return NULL;
+  }
+ 
+  i->height=height;
+  i->width=width;
+  i->maxval=maxval;
+    
+  uint8* pixel=(uint8*) malloc(sizeof(uint8)*width*height);
+  
+  i->pixel=pixel;
+  
+
+  
+  return i;
+
 }
 
 /// Destroy the image pointed to by (*imgp).
@@ -180,8 +204,18 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 /// Ensures: (*imgp)==NULL.
 /// Should never fail, and should preserve global errno/errCause.
 void ImageDestroy(Image* imgp) { ///
+
   assert (imgp != NULL);
   // Insert your code here!
+
+  free((*imgp)->pixel);
+  free(*imgp);
+  // if(*imgp == NULL){
+  //   printf("erro 2");
+  //   // TODO ERROR
+  // }
+  *imgp = NULL;
+
 }
 
 
@@ -237,7 +271,9 @@ Image ImageLoad(const char* filename) { ///
     ImageDestroy(&img);
     errno = errsave;
   }
+
   if (f != NULL) fclose(f);
+  
   return img;
 }
 
@@ -246,6 +282,7 @@ Image ImageLoad(const char* filename) { ///
 /// On failure, returns 0, errno/errCause are set appropriately, and
 /// a partial and invalid file may be left in the system.
 int ImageSave(Image img, const char* filename) { ///
+
   assert (img != NULL);
   int w = img->width;
   int h = img->height;
@@ -291,7 +328,24 @@ int ImageMaxval(Image img) { ///
 /// On return,
 /// *min is set to the minimum gray level in the image,
 /// *max is set to the maximum.
+// TODO CHECK
+// TODO  possivel melhoria a  media de todos os outros valores se for menor q o valor atual entao posso dar break
 void ImageStats(Image img, uint8* min, uint8* max) { ///
+  int arrayfinal= img->height*img->width;
+  *min=255;
+  *max=0;
+
+  for(int i = 0; i<arrayfinal;i++){
+    uint8 pixel = img->pixel[i];
+    if(*min > pixel)
+      *min=pixel;
+    if(*max < pixel)
+      *max=pixel;
+
+    if(*max == 255 && *min == 0)
+      break;
+  }
+
   assert (img != NULL);
   // Insert your code here!
 }
@@ -318,9 +372,10 @@ int ImageValidRect(Image img, int x, int y, int w, int h) { ///
 // Transform (x, y) coords into linear pixel index.
 // This internal function is used in ImageGetPixel / ImageSetPixel. 
 // The returned index must satisfy (0 <= index < img->width*img->height)
+// TODO CHECK
 static inline int G(Image img, int x, int y) {
-  int index;
-  // Insert your code here!
+  int index =y*img->width + x;
+  // Insert your code here! 
   assert (0 <= index && index < img->width*img->height);
   return index;
 }
@@ -353,27 +408,62 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 /// Transform image to negative image.
 /// This transforms dark pixels to light pixels and vice-versa,
 /// resulting in a "photographic negative" effect.
+// TODO CHECK
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+
+  int arrayfinal= img->height*img->width;
+
+  for(int i = 0; i<arrayfinal;i++){
+    uint8 pixel = img->pixel[i];
+    img->pixel[i]= 255 - pixel;
+
+  }
 }
 
 /// Apply threshold to image.
 /// Transform all pixels with level<thr to black (0) and
 /// all pixels with level>=thr to white (maxval).
+// TODO CHECK
 void ImageThreshold(Image img, uint8 thr) { ///
   assert (img != NULL);
   // Insert your code here!
+  int arrayfinal= img->height*img->width;
+
+  for(int i = 0; i<arrayfinal;i++){
+    uint8 pixel = img->pixel[i];
+    if(pixel < thr){
+      img->pixel[i]= 0;
+
+    }else{
+      img->pixel[i]= 255;
+
+    }
+
+  }
 }
 
 /// Brighten image by a factor.
 /// Multiply each pixel level by a factor, but saturate at maxval.
 /// This will brighten the image if factor>1.0 and
 /// darken the image if factor<1.0.
+// TODO CHECK
+
 void ImageBrighten(Image img, double factor) { ///
   assert (img != NULL);
   // ? assert (factor >= 0.0);
   // Insert your code here!
+  int arrayfinal= img->height*img->width;
+
+  for(int i = 0; i<arrayfinal;i++){
+
+    double pixel = (img->pixel[i])*factor;
+    printf("original %hhu outro %f index %d factor %f\n",img->pixel[i],pixel,i,factor);
+
+    img->pixel[i] = (pixel > 255) ? 255 : pixel;
+
+  }
 }
 
 
