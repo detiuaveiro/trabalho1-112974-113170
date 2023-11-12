@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/wH6E8Dzd)
-=======
->>>>>>> upstream/main
 # Trabalho1 AED 2023-2024
 
 Este é o código-fonte para o primeiro projeto de AED 2023-2024.
@@ -59,11 +55,7 @@ Sugere-se o desenvolvimento progressivo pela seguinte ordem:
 6. Completar `ImageValidRect`.
 7. Completar `ImageMirror`, `ImageRotate`.
 8. Completar `ImageCrop`, `ImagePaste` e `ImageBlend`.
-<<<<<<< HEAD
-9. Completar `ImageMatchSubImage` e ` `.
-=======
 9. Completar `ImageMatchSubImage` e `ImageLocateSubImage`.
->>>>>>> upstream/main
 10. Completar `ImageBlur`.
 
 Pode executar `make test1`, `make test2`, etc.
@@ -78,9 +70,13 @@ atualizar repositório base (upstream) deste projeto.
 Se isso acontecer, deverá atualizar o seu repositório com os seguintes comandos:
 
 ```bash
-git remote add upstream git@github.com:detiuaveiro/image8bit-pub.git
-git fetch upstream
-git rebase upstream/main
-```
+# Fazer esta apenas 1 vez:
+git remote add upstream https://github.com/detiuaveiro/image8bit-pub.git
 
+git fetch upstream
+git checkout main
+git merge --allow-unrelated-histories upstream/main
+# (Resolver quaisquer conflitos que surjam...)
+git commit
+```
 
