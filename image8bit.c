@@ -702,6 +702,10 @@ void ImageBlur(Image img, int dx, int dy)
   int w = img->width;
   int h = img->height;
   Image img2 = ImageCreate(w, h, img->maxval);
+  // FINALMENTE ENTENDI O QUE SER BLUR
+  /// https://datacarpentry.org/image-processing/06-blurring.html
+  // i love matrixes
+  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
 
   for (int i = 0; i < w; i++)
   {
