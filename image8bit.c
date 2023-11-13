@@ -737,3 +737,9 @@ void ImageBlur(Image img, int dx, int dy)
   ImagePaste(img, 0, 0, img2);
   ImageDestroy(&img2);
 }
+
+/// OPTIMIZING BLUR FUNCTION
+/// https://www.youtube.com/watch?v=C_zFhWdM4ic
+
+/// AUX FUNCTIONS
+//
