@@ -549,6 +549,7 @@ Image ImageMirror(Image img)
       ImageSetPixel(img2, w - i - 1, j, pixel);
     }
   }
+  return img2;
 }
 
 /// Crop a rectangular subimage from img.
@@ -568,6 +569,19 @@ Image ImageCrop(Image img, int x, int y, int w, int h)
   assert(img != NULL);
   assert(ImageValidRect(img, x, y, w, h));
   // Insert your code here!
+
+  Image img2 = ImageCreate(w, h, img->maxval);
+
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      uint8 pixel = ImageGetPixel(img, x + i, y + j);
+      ImageSetPixel(img2, i, j, pixel);
+    }
+  }
+
+  return img2;
 }
 
 /// Operations on two images
@@ -582,6 +596,16 @@ void ImagePaste(Image img1, int x, int y, Image img2)
   assert(img2 != NULL);
   assert(ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+  int w = img2->width;
+  int h = img2->height;
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      uint8 pixel = ImageGetPixel(img2, i, j);
+      ImageSetPixel(img1, x + i, y + j, pixel);
+    }
+  }
 }
 
 /// Blend an image into a larger image.
@@ -596,6 +620,18 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   assert(img2 != NULL);
   assert(ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+  int w = img2->width;
+  int h = img2->height;
+  // devo usar o image paste? ou fazer um for?
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      uint8 pixel = ImageGetPixel(img2, i, j);
+      // depois de muita volta e pensar cheguei aqui
+      ImageSetPixel(img1, x + i, y + j, round(pixel * alpha + ImageGetPixel(img1, x + i, y + j) * (1 - alpha)));
+    }
+  }
 }
 
 /// Compare an image to a subimage of a larger image.
@@ -607,6 +643,21 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2)
   assert(img2 != NULL);
   assert(ImageValidPos(img1, x, y));
   // Insert your code here!
+
+  int w = img2->width;
+  int h = img2->height;
+
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      if (ImageGetPixel(img1, x + i, y + j) != ImageGetPixel(img2, i, j))
+      {
+        return 0;
+      }
+    }
+  }
+  return 1;
 }
 
 /// Locate a subimage inside another image.
@@ -618,6 +669,24 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   assert(img1 != NULL);
   assert(img2 != NULL);
   // Insert your code here!
+  int w = img1->width;
+  int h = img1->height;
+  int w2 = img2->width;
+  int h2 = img2->height;
+
+  for (int i = 0; i < w - w2 + 1; i++)
+  {
+    for (int j = 0; j < h - h2 + 1; j++)
+    {
+      if (ImageMatchSubImage(img1, i, j, img2))
+      {
+        *px = i;
+        *py = j;
+        return 1;
+      }
+    }
+  }
+  return 0;
 }
 
 /// Filtering
@@ -629,4 +698,38 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 void ImageBlur(Image img, int dx, int dy)
 { ///
   // Insert your code here!
+  assert(img != NULL);
+  int w = img->width;
+  int h = img->height;
+  Image img2 = ImageCreate(w, h, img->maxval);
+
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+
+      uint8 pixel = ImageGetPixel(img, i, j);
+      double mean = 0;
+      int count = 0;
+
+      for (int k = i - dx; k <= i + dx; k++)
+      {
+
+        for (int l = j - dy; l <= j + dy; l++)
+        {
+          if (ImageValidPos(img, k, l))
+          {
+
+            mean += ImageGetPixel(img, k, l);
+            count++;
+          }
+        }
+      }
+      mean /= (count);
+      mean = round(mean);
+      ImageSetPixel(img2, i, j, mean);
+    }
+  }
+  ImagePaste(img, 0, 0, img2);
+  ImageDestroy(&img2);
 }
