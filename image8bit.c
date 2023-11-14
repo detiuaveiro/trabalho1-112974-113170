@@ -25,8 +25,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <math.h>
-
 #include "instrumentation.h"
 
 // The data structure
@@ -150,6 +148,13 @@ void ImageInit(void)
   InstrCalibrate();
   InstrName[0] = "pixmem"; // InstrCount[0] will count pixel array acesses
   // Name other counters here...
+}
+
+/// AUX FUNCTIONS
+// myRound function
+int myRound(double x)
+{
+  return (int)(x + 0.5);
 }
 
 // Macros to simplify accessing instrumentation counters:
@@ -481,7 +486,7 @@ void ImageBrighten(Image img, double factor)
 
     double pixeln = (img->pixel[i]) * factor;
 
-    img->pixel[i] = (pixeln > 255) ? 255 : round(pixeln);
+    img->pixel[i] = (pixeln > 255) ? 255 : myRound(pixeln);
   }
 }
 
@@ -629,7 +634,7 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
     {
       uint8 pixel = ImageGetPixel(img2, i, j);
       // depois de muita volta e pensar cheguei aqui
-      ImageSetPixel(img1, x + i, y + j, round(pixel * alpha + ImageGetPixel(img1, x + i, y + j) * (1 - alpha)));
+      ImageSetPixel(img1, x + i, y + j, myRound(pixel * alpha + ImageGetPixel(img1, x + i, y + j) * (1 - alpha)));
     }
   }
 }
@@ -695,51 +700,112 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 /// Each pixel is substituted by the mean of the pixels in the rectangle
 /// [x-dx, x+dx]x[y-dy, y+dy].
 /// The image is changed in-place.
+// void ImageBlur(Image img, int dx, int dy)
+// { ///
+//   // Insert your code here!
+//   assert(img != NULL);
+//   int w = img->width;
+//   int h = img->height;
+//   Image img2 = ImageCreate(w, h, img->maxval);
+//   // FINALMENTE ENTENDI O QUE SER BLUR
+//   /// https://datacarpentry.org/image-processing/06-blurring.html
+//   // i love matrixes
+//   /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
+//   InstrName[0] = "adds";
+//   InstrName[1] = "divisions";
+//   InstrCalibrate(); // Call once, to measure CTU
+//   InstrReset();     // reset to zero
+//   for (int i = 0; i < w; i++)
+//   {
+//     for (int j = 0; j < h; j++)
+//     {
+
+//       // uint8 pixel = ImageGetPixel(img, i, j);
+//       double mean = 0;
+//       int count = 0;
+
+//       for (int k = i - dx; k <= i + dx; k++)
+//       {
+
+//         for (int l = j - dy; l <= j + dy; l++)
+//         {
+//           if (ImageValidPos(img, k, l))
+//           {
+
+//             mean += ImageGetPixel(img, k, l);
+//             count++;
+//             InstrCount[0] += 2;
+//           }
+//         }
+//       }
+//       mean /= (count);
+//       InstrCount[1] += 1;
+
+//       mean = myRound(mean);
+//       ImageSetPixel(img2, i, j, mean);
+//     }
+//   }
+//   InstrPrint();
+
+//   ImagePaste(img, 0, 0, img2);
+//   ImageDestroy(&img2);
+// }
+
+//////
 void ImageBlur(Image img, int dx, int dy)
-{ ///
-  // Insert your code here!
+{
   assert(img != NULL);
   int w = img->width;
   int h = img->height;
-  Image img2 = ImageCreate(w, h, img->maxval);
-  // FINALMENTE ENTENDI O QUE SER BLUR
-  /// https://datacarpentry.org/image-processing/06-blurring.html
-  // i love matrixes
-  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
 
+  // Create a temporary image to store blurred values
+  Image tempImg = ImageCreate(w, h, img->maxval);
+  InstrName[0] = "adds";
+  InstrName[1] = "divisions";
+  InstrCalibrate(); // Call once, to measure CTU
+  InstrReset();     // reset to zero
   for (int i = 0; i < w; i++)
   {
     for (int j = 0; j < h; j++)
     {
-
-      uint8 pixel = ImageGetPixel(img, i, j);
       double mean = 0;
       int count = 0;
 
       for (int k = i - dx; k <= i + dx; k++)
       {
-
         for (int l = j - dy; l <= j + dy; l++)
         {
           if (ImageValidPos(img, k, l))
           {
-
-            mean += ImageGetPixel(img, k, l);
+            mean += img->pixel[G(img, k, l)];
             count++;
+            InstrCount[0] += 2;
           }
         }
       }
-      mean /= (count);
-      mean = round(mean);
-      ImageSetPixel(img2, i, j, mean);
+
+      if (count > 0)
+      {
+
+        InstrCount[1] += 1;
+        mean /= count;
+        tempImg->pixel[G(tempImg, i, j)] = myRound(mean);
+      }
     }
   }
-  ImagePaste(img, 0, 0, img2);
-  ImageDestroy(&img2);
+
+  // Copy values back to the original image
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      img->pixel[G(img, i, j)] = tempImg->pixel[G(tempImg, i, j)];
+    }
+  }
+  InstrPrint();
+  // Destroy the temporary image
+  ImageDestroy(&tempImg);
 }
 
 /// OPTIMIZING BLUR FUNCTION
 /// https://www.youtube.com/watch?v=C_zFhWdM4ic
-
-/// AUX FUNCTIONS
-//

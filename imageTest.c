@@ -20,7 +20,7 @@
 
 int main(int argc, char *argv[])
 {
-  // program_name = argv[0];
+  program_name = argv[0];
   if (argc != 3)
   {
     error(1, 0, "Usage: imageTest input.pgm output.pgm");
