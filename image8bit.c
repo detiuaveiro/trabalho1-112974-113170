@@ -694,72 +694,98 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   return 0;
 }
 
+/// Aux functions
+
+/// sum table
+/// aproach to memoization
+/// this functions calculates the sum of all the pixels in a rectangle
+/// of the image
+// TODO garantir a segurança da função
+// COMO DEVEMOS FAZER O TESTING DOS ERROS?
+int **sumTable(Image img)
+{
+  int w = img->width;
+  int h = img->height;
+  // aumentar segurnaça do malloc
+  printf("Before malloc\n");
+  int **table = (int **)malloc((w + 1) * sizeof(int *));
+  printf("After malloc\n");
+
+  for (int i = 0; i < w + 1; i++)
+  {
+    // printf("Before malloc%d\n", i);
+
+    table[i] = (int *)malloc((h + 1) * sizeof(int));
+  }
+
+  int sum = 0;
+  // int *table = (int *)malloc(sizeof(int) * w * h);
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      int pixelValue = ImageGetPixel(img, i, j);
+
+      // Adicione o valor do pixel atual
+      table[i][j] = pixelValue;
+
+      // Adicione os valores acumulados à esquerda e acima (se aplicável)
+      if (i > 0)
+        table[i][j] += table[i - 1][j];
+      if (j > 0)
+        table[i][j] += table[i][j - 1];
+      if (i > 0 && j > 0)
+        table[i][j] -= table[i - 1][j - 1];
+    }
+  }
+
+  return table;
+}
+
 /// Filtering
 
 /// Blur an image by a applying a (2dx+1)x(2dy+1) mean filter.
 /// Each pixel is substituted by the mean of the pixels in the rectangle
 /// [x-dx, x+dx]x[y-dy, y+dy].
 /// The image is changed in-place.
-// void ImageBlur(Image img, int dx, int dy)
-// { ///
-//   // Insert your code here!
-//   assert(img != NULL);
-//   int w = img->width;
-//   int h = img->height;
-//   Image img2 = ImageCreate(w, h, img->maxval);
-//   // FINALMENTE ENTENDI O QUE SER BLUR
-//   /// https://datacarpentry.org/image-processing/06-blurring.html
-//   // i love matrixes
-//   /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
-//   InstrName[0] = "adds";
-//   InstrName[1] = "divisions";
-//   InstrCalibrate(); // Call once, to measure CTU
-//   InstrReset();     // reset to zero
-//   for (int i = 0; i < w; i++)
-//   {
-//     for (int j = 0; j < h; j++)
-//     {
-
-//       // uint8 pixel = ImageGetPixel(img, i, j);
-//       double mean = 0;
-//       int count = 0;
-
-//       for (int k = i - dx; k <= i + dx; k++)
-//       {
-
-//         for (int l = j - dy; l <= j + dy; l++)
-//         {
-//           if (ImageValidPos(img, k, l))
-//           {
-
-//             mean += ImageGetPixel(img, k, l);
-//             count++;
-//             InstrCount[0] += 2;
-//           }
-//         }
-//       }
-//       mean /= (count);
-//       InstrCount[1] += 1;
-
-//       mean = myRound(mean);
-//       ImageSetPixel(img2, i, j, mean);
-//     }
-//   }
-//   InstrPrint();
-
-//   ImagePaste(img, 0, 0, img2);
-//   ImageDestroy(&img2);
-// }
-
-//////
 void ImageBlur(Image img, int dx, int dy)
-{
+{ ///
+  // Insert your code here!
   assert(img != NULL);
   int w = img->width;
   int h = img->height;
+  // i want to use sumtable
+  int rect = (2 * dx + 1) * (2 * dy + 1);
+  int **table = sumTable(img);
+  // printtable
+  FILE *fp;
+  FILE *fp1;
 
-  // Create a temporary image to store blurred values
-  Image tempImg = ImageCreate(w, h, img->maxval);
+  fp = fopen("file.txt", "w");
+  fp1 = fopen("file2.txt", "w");
+  for (int i = 0; i < w; i++)
+  { // header
+    for (int j = 0; j < h; j++)
+    {
+
+      // put in a file
+      fprintf(fp, "%d ", table[i][j]);
+      fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
+      // printf("%d ", table[i][j]);
+    }
+
+    fprintf(fp, "%s", "\n");
+    fprintf(fp1, "%s", "\n");
+  }
+
+  fclose(fp);
+  fclose(fp1);
+  Image img2 = ImageCreate(w, h, img->maxval);
+
+  // FINALMENTE ENTENDI O QUE SER BLUR
+  /// https://datacarpentry.org/image-processing/06-blurring.html
+  // i love matrixes
+  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
   InstrName[0] = "adds";
   InstrName[1] = "divisions";
   InstrCalibrate(); // Call once, to measure CTU
@@ -768,44 +794,42 @@ void ImageBlur(Image img, int dx, int dy)
   {
     for (int j = 0; j < h; j++)
     {
-      double mean = 0;
-      int count = 0;
+      int x0 = (i - dx - 1 < 0) ? 0 : i - dx - 1;
+      int x1 = (i + dx >= w) ? w - 1 : i + dx;
+      int y0 = (j - dy - 1 < 0) ? 0 : j - dy - 1;
+      int y1 = (j + dy >= h) ? h - 1 : j + dy;
 
-      for (int k = i - dx; k <= i + dx; k++)
-      {
-        for (int l = j - dy; l <= j + dy; l++)
-        {
-          if (ImageValidPos(img, k, l))
-          {
-            mean += img->pixel[G(img, k, l)];
-            count++;
-            InstrCount[0] += 2;
-          }
-        }
-      }
+      // int count = (x1 >= x0 && y1 >= y0) ? (x1 - x0 + 1) * (y1 - y0 + 1) : 0;
+      // printf("count: %d\n", count);
+      // printf("x0: %d\n", x0);
+      // printf("x1: %d\n", x1);
+      // printf("y0: %d\n", y0);
+      // printf("y1: %d\n", y1);
+      // printf("((x1 - x0)*(y1-y0)): %d\n", ((x1 - x0) * (y1 - y0)));
+      // printf("2dx+1 * 2dy+1: %d\n", (2 * dx + 1) * (2 * dy + 1));
 
-      if (count > 0)
-      {
+      int sum = table[x1][y1] - table[x0][y1] - table[x1][y0] + table[x0][y0];
 
-        InstrCount[1] += 1;
-        mean /= count;
-        tempImg->pixel[G(tempImg, i, j)] = myRound(mean);
-      }
+      // double mean = (double)(sum) / count;
+      // double mean = (sum) / rect;
+      double mean = (double)(sum) / (((x1 - x0) * (y1 - y0)));
+
+      mean = myRound(mean);
+      // mean++;
+      ImageSetPixel(img2, i, j, mean);
     }
   }
 
-  // Copy values back to the original image
-  for (int i = 0; i < w; i++)
-  {
-    for (int j = 0; j < h; j++)
-    {
-      img->pixel[G(img, i, j)] = tempImg->pixel[G(tempImg, i, j)];
-    }
-  }
   InstrPrint();
-  // Destroy the temporary image
-  ImageDestroy(&tempImg);
+
+  ImagePaste(img, 0, 0, img2);
+  ImageDestroy(&img2);
+  // Libere a memória alocada para a tabela de soma
+  free(table[0]);
+  free(table);
 }
+
+//////
 
 /// OPTIMIZING BLUR FUNCTION
 /// https://www.youtube.com/watch?v=C_zFhWdM4ic
