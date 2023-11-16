@@ -10,11 +10,11 @@
 /// 2013, 2023
 
 // Student authors (fill in below):
-// NMec:  Name:
+// NMec: 112974  Name: André Pedro Ribeiro
+// NMec: 113170  Name: Daniel Batista Ramos
 //
 //
-//
-// Date:
+// Date: 23/11/2023
 //
 
 #include "image8bit.h"
@@ -151,6 +151,7 @@ void ImageInit(void)
 }
 
 /// AUX FUNCTIONS
+/// TODO COMENTAR E DIZER QUE SÃO AS NOSSAS FUNCOES
 // myRound function
 int myRound(double x)
 {
@@ -174,27 +175,29 @@ int myRound(double x)
 /// (The caller is responsible for destroying the returned image!)
 /// On failure, returns NULL and errno/errCause are set accordingly.
 
-// TODO Estudar a forma como os erros vao ser desenvolvidos
 Image ImageCreate(int width, int height, uint8 maxval)
-{ ///
+{
 
   assert(width >= 0);
   assert(height >= 0);
   assert(0 < maxval && maxval <= PixMax);
 
   // Insert your code here!
-  Image i = (Image)malloc(sizeof(*i));
+  Image i = (Image)malloc(sizeof(*i)); // allocate memory for image
 
+  // if allocation fails, it returns NULL
   if (i == NULL)
   {
-    check(i == NULL, "NAO CONSEGUI ALOCAR MEMORIA"); // ALTERAR
     return NULL;
+    // TODO global errno???
   }
 
   i->height = height;
   i->width = width;
-  i->maxval = maxval;
+  i->maxval = maxval; // 255
 
+  // allocate memory for array pixel with the size of width times heigth
+  // unsigned int eigth
   uint8 *pixel = (uint8 *)malloc(sizeof(uint8) * width * height);
 
   i->pixel = pixel;
@@ -341,11 +344,14 @@ int ImageMaxval(Image img)
 // TODO  possivel melhoria a  media de todos os outros valores se for menor q o valor atual entao posso dar break
 void ImageStats(Image img, uint8 *min, uint8 *max)
 { ///
-  int arrayfinal = img->height * img->width;
-  *min = 255;
+  assert(img != NULL);
+  // Insert your code here!
+  int tamanhoDoArray = img->height * img->width;
+  // min and max starts swapped in order to the if statements work
+  *min = PixMax;
   *max = 0;
 
-  for (int i = 0; i < arrayfinal; i++)
+  for (int i = 0; i < tamanhoDoArray; i++)
   {
     uint8 pixel = img->pixel[i];
     if (*min > pixel)
@@ -353,12 +359,11 @@ void ImageStats(Image img, uint8 *min, uint8 *max)
     if (*max < pixel)
       *max = pixel;
 
-    if (*max == 255 && *min == 0)
+    // if max is 255 and min is 0 then break they cant be more or less since
+    // it's the limit from the given type (uint8)
+    if (*max == PixMax && *min == 0)
       break;
   }
-
-  assert(img != NULL);
-  // Insert your code here!
 }
 
 /// Check if pixel position (x,y) is inside img.
@@ -372,11 +377,13 @@ int ImageValidPos(Image img, int x, int y)
 int ImageValidRect(Image img, int x, int y, int w, int h)
 { ///
   assert(img != NULL);
-  // x é posicao inical
-  // y é a posicao inicial
-  // w é a largura
-  // h é a altura
   // Insert your code here!
+
+  // to validate a rectangle you must have the two oposite corners inside the image
+  // if the corners are inside the image then the rectangle is valid
+  // so we validate the first corner (top-left(x,y)) and then the second (bottom-right(x+w-1,y+h-1))
+  // (we do -1 because the image is 0-indexed)
+  // we use shortcircuit evaluation to avoid a call to ImageValidPos unneccessary
   return ImageValidPos(img, x, y) && ImageValidPos(img, x + w - 1, y + h - 1);
 }
 
@@ -390,11 +397,15 @@ int ImageValidRect(Image img, int x, int y, int w, int h)
 // Transform (x, y) coords into linear pixel index.
 // This internal function is used in ImageGetPixel / ImageSetPixel.
 // The returned index must satisfy (0 <= index < img->width*img->height)
-// TODO CHECK
+
 static inline int G(Image img, int x, int y)
 {
-  int index = y * img->width + x;
+  assert(img != NULL);
   // Insert your code here!
+
+  // linearization of 2D coordinates in 1D to use in img->pixel[index]
+  //
+  int index = y * img->width + x;
   assert(0 <= index && index < img->width * img->height);
   return index;
 }
@@ -433,12 +444,13 @@ void ImageNegative(Image img)
   assert(img != NULL);
   // Insert your code here!
 
-  int arrayfinal = img->height * img->width;
+  int tamanhoPixelArray = img->height * img->width;
 
-  for (int i = 0; i < arrayfinal; i++)
+  for (int i = 0; i < tamanhoPixelArray; i++)
   {
     uint8 pixel = img->pixel[i];
     img->pixel[i] = 255 - pixel;
+    PIXMEM += 2;
   }
 }
 
