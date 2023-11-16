@@ -404,7 +404,6 @@ static inline int G(Image img, int x, int y)
   // Insert your code here!
 
   // linearization of 2D coordinates in 1D to use in img->pixel[index]
-  //
   int index = y * img->width + x;
   assert(0 <= index && index < img->width * img->height);
   return index;
@@ -448,8 +447,10 @@ void ImageNegative(Image img)
 
   for (int i = 0; i < tamanhoPixelArray; i++)
   {
+    // to negate a pixel is similar to negate a probability...
+    //the difference between 255(PixMax) and any given value is equal to its negative, in uint8
     uint8 pixel = img->pixel[i];
-    img->pixel[i] = 255 - pixel;
+    img->pixel[i] = PixMax - pixel;
     PIXMEM += 2;
   }
 }
@@ -462,19 +463,13 @@ void ImageThreshold(Image img, uint8 thr)
 { ///
   assert(img != NULL);
   // Insert your code here!
-  int arrayfinal = img->height * img->width;
+  int tamanhoPixelArray = img->height * img->width;
 
-  for (int i = 0; i < arrayfinal; i++)
+  for (int i = 0; i < tamanhoPixelArray; i++)
   {
     uint8 pixel = img->pixel[i];
-    if (pixel < thr)
-    {
-      img->pixel[i] = 0;
-    }
-    else
-    {
-      img->pixel[i] = 255;
-    }
+    img->pixel[i]= pixel < thr ? 0:PixMax;
+
   }
 }
 
@@ -489,17 +484,19 @@ void ImageBrighten(Image img, double factor)
   assert(img != NULL);
   // ? assert (factor >= 0.0);
   // Insert your code here!
-  int arrayfinal = (img->height) * (img->width);
+  int tamanhoPixelArray = (img->height) * (img->width);
 
   // this function is not working
 
-  for (int i = 0; i < arrayfinal; i++)
+  for (int i = 0; i < tamanhoPixelArray; i++)
   {
-
-    double pixeln = (img->pixel[i]) * factor;
-
-    img->pixel[i] = (pixeln > 255) ? 255 : myRound(pixeln);
+    double new_pixel = (img->pixel[i]) * factor;
+    // In order to not lose any data we must store the information in a double, new_pixel
+    img->pixel[i] = (new_pixel > PixMax) ? PixMax : myRound(new_pixel);
+    // we will round the new_pixel in order to obtain an integer valid in uint8
+    // however in the case of overflowing (new_pixel > PixMax), pixel[i] will be set to PixMax
   }
+  
 }
 
 /// Geometric transformations
