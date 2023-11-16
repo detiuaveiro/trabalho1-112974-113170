@@ -718,7 +718,6 @@ int **sumTable(Image img)
     table[i] = (int *)malloc((h + 1) * sizeof(int));
   }
 
-  int sum = 0;
   // int *table = (int *)malloc(sizeof(int) * w * h);
   for (int i = 0; i < w; i++)
   {
@@ -755,7 +754,6 @@ void ImageBlur(Image img, int dx, int dy)
   int w = img->width;
   int h = img->height;
   // i want to use sumtable
-  int rect = (2 * dx + 1) * (2 * dy + 1);
   int **table = sumTable(img);
   // printtable
   FILE *fp;
