@@ -148,6 +148,9 @@ void ImageInit(void)
   InstrCalibrate();
   InstrName[0] = "pixmem"; // InstrCount[0] will count pixel array acesses
   // Name other counters here...
+  InstrName[1] = "adds or subs";
+  InstrName[2] = "divisions";
+  InstrName[3] = "comparisons";
 }
 
 /// AUX FUNCTIONS
@@ -155,6 +158,7 @@ void ImageInit(void)
 // myRound function
 int myRound(double x)
 {
+  InstrCount[1]++;
   return (int)(x + 0.5);
 }
 
@@ -651,6 +655,10 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   }
 }
 
+// Blend the pixel values using the specified alpha value.
+// The formula used is: new_pixel = pixel * alpha + old_pixel * (1 - alpha)
+// where old_pixel is the pixel value at the corresponding position in img1.
+//
 /// Compare an image to a subimage of a larger image.
 /// Returns 1 (true) if img2 matches subimage of img1 at pos (x, y).
 /// Returns 0, otherwise.
@@ -668,6 +676,7 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2)
   {
     for (int j = 0; j < h; j++)
     {
+      InstrCount[3]++;
       if (ImageGetPixel(img1, x + i, y + j) != ImageGetPixel(img2, i, j))
       {
         return 0;
@@ -686,6 +695,8 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   assert(img1 != NULL);
   assert(img2 != NULL);
   // Insert your code here!
+  ImageInit();
+  InstrReset(); // reset to zero
   int w = img1->width;
   int h = img1->height;
   int w2 = img2->width;
@@ -695,14 +706,18 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   {
     for (int j = 0; j < h - h2 + 1; j++)
     {
+      InstrCount[3]++;
       if (ImageMatchSubImage(img1, i, j, img2))
       {
         *px = i;
         *py = j;
+        InstrPrint();
+
         return 1;
       }
     }
   }
+  InstrPrint();
   return 0;
 }
 
@@ -719,18 +734,13 @@ int **sumTable(Image img)
   int w = img->width;
   int h = img->height;
   // aumentar segurnaça do malloc
-  printf("Before malloc\n");
   int **table = (int **)malloc((w + 1) * sizeof(int *));
-  printf("After malloc\n");
 
   for (int i = 0; i < w + 1; i++)
   {
-    // printf("Before malloc%d\n", i);
-
     table[i] = (int *)malloc((h + 1) * sizeof(int));
   }
 
-  // int *table = (int *)malloc(sizeof(int) * w * h);
   for (int i = 0; i < w; i++)
   {
     for (int j = 0; j < h; j++)
@@ -742,11 +752,20 @@ int **sumTable(Image img)
 
       // Adicione os valores acumulados à esquerda e acima (se aplicável)
       if (i > 0)
+      {
         table[i][j] += table[i - 1][j];
+        InstrCount[1]++;
+      }
       if (j > 0)
+      {
         table[i][j] += table[i][j - 1];
+        InstrCount[1]++;
+      }
       if (i > 0 && j > 0)
+      {
         table[i][j] -= table[i - 1][j - 1];
+        InstrCount[1]++;
+      }
     }
   }
 
@@ -765,41 +784,38 @@ void ImageBlur(Image img, int dx, int dy)
   assert(img != NULL);
   int w = img->width;
   int h = img->height;
-  // i want to use sumtable
+  ImageInit();
+  InstrReset(); // reset to zero
   int **table = sumTable(img);
-  // printtable
-  FILE *fp;
-  FILE *fp1;
+  // FILE *fp;
+  // FILE *fp1;
 
-  fp = fopen("file.txt", "w");
-  fp1 = fopen("file2.txt", "w");
-  for (int i = 0; i < w; i++)
-  { // header
-    for (int j = 0; j < h; j++)
-    {
+  // fp = fopen("file.txt", "w");
+  // fp1 = fopen("file2.txt", "w");
+  // for (int i = 0; i < w; i++)
+  // { // header
+  //   for (int j = 0; j < h; j++)
+  //   {
 
-      // put in a file
-      fprintf(fp, "%d ", table[i][j]);
-      fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
-      // printf("%d ", table[i][j]);
-    }
+  //     // put in a file
+  //     // fprintf(fp, "%d ", table[i][j]);
+  //     fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
+  //     // printf("%d ", table[i][j]);
+  //   }
 
-    fprintf(fp, "%s", "\n");
-    fprintf(fp1, "%s", "\n");
-  }
+  //   fprintf(fp, "%s", "\n");
+  //   fprintf(fp1, "%s", "\n");
+  // }
 
-  fclose(fp);
-  fclose(fp1);
+  // fclose(fp);
+  // fclose(fp1);
   Image img2 = ImageCreate(w, h, img->maxval);
 
   // FINALMENTE ENTENDI O QUE SER BLUR
   /// https://datacarpentry.org/image-processing/06-blurring.html
   // i love matrixes
   /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
-  InstrName[0] = "adds";
-  InstrName[1] = "divisions";
-  InstrCalibrate(); // Call once, to measure CTU
-  InstrReset();     // reset to zero
+
   for (int i = 0; i < w; i++)
   {
     for (int j = 0; j < h; j++)
@@ -819,10 +835,12 @@ void ImageBlur(Image img, int dx, int dy)
       // printf("2dx+1 * 2dy+1: %d\n", (2 * dx + 1) * (2 * dy + 1));
 
       int sum = table[x1][y1] - table[x0][y1] - table[x1][y0] + table[x0][y0];
+      InstrCount[1] += 3;
 
       // double mean = (double)(sum) / count;
       // double mean = (sum) / rect;
       double mean = (double)(sum) / (((x1 - x0) * (y1 - y0)));
+      InstrCount[2]++;
 
       mean = myRound(mean);
       // mean++;
