@@ -793,25 +793,25 @@ void ImageBlur(Image img, int dx, int dy)
   // FILE *fp;
   // FILE *fp1;
 
-  fp = fopen("file.txt", "w");
-  fp1 = fopen("file2.txt", "w");
-  for (int i = 0; i < w; i++)
-  { // header
-    for (int j = 0; j < h; j++)
-    {
+  // fp = fopen("file.txt", "w");
+  // fp1 = fopen("file2.txt", "w");
+  // for (int i = 0; i < w; i++)
+  // { // header
+  //   for (int j = 0; j < h; j++)
+  //   {
 
-      // put in a file
-      fprintf(fp, "%d ", table[i][j]);
-      fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
-      // printf("%d ", table[i][j]);
-    }
+  //     // put in a file
+  //     fprintf(fp, "%d ", table[i][j]);
+  //     fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
+  //     // printf("%d ", table[i][j]);
+  //   }
 
-    fprintf(fp, "%s", "\n");
-    fprintf(fp1, "%s", "\n");
-  }
+  //   fprintf(fp, "%s", "\n");
+  //   fprintf(fp1, "%s", "\n");
+  // }
 
-  fclose(fp);
-  fclose(fp1);
+  // fclose(fp);
+  // fclose(fp1);
   Image img2 = ImageCreate(w, h, img->maxval);
 
   // FINALMENTE ENTENDI O QUE SER BLUR
