@@ -341,13 +341,12 @@ int ImageMaxval(Image img)
 /// *min is set to the minimum gray level in the image,
 /// *max is set to the maximum.
 // TODO CHECK
-// TODO  possivel melhoria a  media de todos os outros valores se for menor q o valor atual entao posso dar break
 void ImageStats(Image img, uint8 *min, uint8 *max)
 { ///
   assert(img != NULL);
   // Insert your code here!
   int tamanhoDoArray = img->height * img->width;
-  // min and max starts swapped in order to the if statements work
+  // In order to if statements work, min and max must start swapped 
   *min = PixMax;
   *max = 0;
 
@@ -359,7 +358,7 @@ void ImageStats(Image img, uint8 *min, uint8 *max)
     if (*max < pixel)
       *max = pixel;
 
-    // if max is 255 and min is 0 then break they cant be more or less since
+    // if max is 255 and min is 0 then break, they cant be more or less since
     // it's the limit from the given type (uint8)
     if (*max == PixMax && *min == 0)
       break;
@@ -379,11 +378,9 @@ int ImageValidRect(Image img, int x, int y, int w, int h)
   assert(img != NULL);
   // Insert your code here!
 
-  // to validate a rectangle you must have the two oposite corners inside the image
-  // if the corners are inside the image then the rectangle is valid
-  // so we validate the first corner (top-left(x,y)) and then the second (bottom-right(x+w-1,y+h-1))
-  // (we do -1 because the image is 0-indexed)
-  // we use shortcircuit evaluation to avoid a call to ImageValidPos unneccessary
+  // To validate a rectangle, you must have the two opposite corners inside the image
+  // first validate the top-left corner (x, y) then the bottom-right (x+w-1,y+h-1) (-1 because the image is 0-indexed)
+  // we use shortcircuit evaluation to avoid an unnecessary call to ImageValidPos 
   return ImageValidPos(img, x, y) && ImageValidPos(img, x + w - 1, y + h - 1);
 }
 
@@ -403,7 +400,7 @@ static inline int G(Image img, int x, int y)
   assert(img != NULL);
   // Insert your code here!
 
-  // linearization of 2D coordinates in 1D to use in img->pixel[index]
+  // Linearization of 2D coordinates in 1D to use in img->pixel[index]
   int index = y * img->width + x;
   assert(0 <= index && index < img->width * img->height);
   return index;
@@ -447,8 +444,8 @@ void ImageNegative(Image img)
 
   for (int i = 0; i < tamanhoPixelArray; i++)
   {
-    // to negate a pixel is similar to negate a probability...
-    //the difference between 255(PixMax) and any given value is equal to its negative, in uint8
+    // To negate a pixel is similar to negate a probability…
+    // The difference between 255(PixMax) and any given value is equal to its negative, in uint8
     uint8 pixel = img->pixel[i];
     img->pixel[i] = PixMax - pixel;
     PIXMEM += 2;
@@ -491,10 +488,10 @@ void ImageBrighten(Image img, double factor)
   for (int i = 0; i < tamanhoPixelArray; i++)
   {
     double new_pixel = (img->pixel[i]) * factor;
-    // In order to not lose any data we must store the information in a double, new_pixel
+    // To avoid losing any information, we must store it in a double (new_pixel) format.
     img->pixel[i] = (new_pixel > PixMax) ? PixMax : myRound(new_pixel);
-    // we will round the new_pixel in order to obtain an integer valid in uint8
-    // however in the case of overflowing (new_pixel > PixMax), pixel[i] will be set to PixMax
+    // We will round the new_pixel to obtain an integer valid in uint8
+    // however, in the case of overflowing (new_pixel > PixMax), pixel[i] will be set to PixMax
   }
   
 }
@@ -533,6 +530,10 @@ Image ImageRotate(Image img)
     for (int j = 0; j < h; j++)
     {
       uint8 pixel = ImageGetPixel(img, i, j);
+      // In order to rotate an image anti-clock wise, for any given pixel,
+      // the height must swap with the width and the width needs to be negated
+      // Width: j stops representing the y-axis to represent the x-axis
+      // Height: we must subtract the index in x-axis (i) and one (because it's indexed from 0 to n), from the width
       ImageSetPixel(img2, j, w - i - 1, pixel);
     }
   }
@@ -558,7 +559,7 @@ Image ImageMirror(Image img)
   {
     for (int j = 0; j < h; j++)
     {
-
+      // This one it's almost the same as the "ImageRotate", anyhow in this function we do not swap the height with the width
       uint8 pixel = ImageGetPixel(img, i, j);
       ImageSetPixel(img2, w - i - 1, j, pixel);
     }
@@ -641,12 +642,20 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   {
     for (int j = 0; j < h; j++)
     {
+
+      // To set the new value we must first discover where we are going to change it, to do so we use x + i, y + j 
+      // Now to blend pixels, we use alpha in the following formula:
+      // new pixel = pixel2 * alpha + pixel1 * (1 - alpha)
+      // With this we achieve the expected effect
+
       uint8 pixel = ImageGetPixel(img2, i, j);
-      // depois de muita volta e pensar cheguei aqui
       ImageSetPixel(img1, x + i, y + j, myRound(pixel * alpha + ImageGetPixel(img1, x + i, y + j) * (1 - alpha)));
     }
   }
 }
+
+
+// inicio TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// Compare an image to a subimage of a larger image.
 /// Returns 1 (true) if img2 matches subimage of img1 at pos (x, y).
@@ -702,7 +711,7 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   }
   return 0;
 }
-
+// fim TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Aux functions
 
 /// sum table
@@ -768,25 +777,6 @@ void ImageBlur(Image img, int dx, int dy)
   FILE *fp;
   FILE *fp1;
 
-  fp = fopen("file.txt", "w");
-  fp1 = fopen("file2.txt", "w");
-  for (int i = 0; i < w; i++)
-  { // header
-    for (int j = 0; j < h; j++)
-    {
-
-      // put in a file
-      fprintf(fp, "%d ", table[i][j]);
-      fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
-      // printf("%d ", table[i][j]);
-    }
-
-    fprintf(fp, "%s", "\n");
-    fprintf(fp1, "%s", "\n");
-  }
-
-  fclose(fp);
-  fclose(fp1);
   Image img2 = ImageCreate(w, h, img->maxval);
 
   // FINALMENTE ENTENDI O QUE SER BLUR
@@ -806,23 +796,13 @@ void ImageBlur(Image img, int dx, int dy)
       int y0 = (j - dy - 1 < 0) ? 0 : j - dy - 1;
       int y1 = (j + dy >= h) ? h - 1 : j + dy;
 
-      // int count = (x1 >= x0 && y1 >= y0) ? (x1 - x0 + 1) * (y1 - y0 + 1) : 0;
-      // printf("count: %d\n", count);
-      // printf("x0: %d\n", x0);
-      // printf("x1: %d\n", x1);
-      // printf("y0: %d\n", y0);
-      // printf("y1: %d\n", y1);
-      // printf("((x1 - x0)*(y1-y0)): %d\n", ((x1 - x0) * (y1 - y0)));
-      // printf("2dx+1 * 2dy+1: %d\n", (2 * dx + 1) * (2 * dy + 1));
-
       int sum = table[x1][y1] - table[x0][y1] - table[x1][y0] + table[x0][y0];
 
-      // double mean = (double)(sum) / count;
-      // double mean = (sum) / rect;
       double mean = (double)(sum) / (((x1 - x0) * (y1 - y0)));
 
+
+
       mean = myRound(mean);
-      // mean++;
       ImageSetPixel(img2, i, j, mean);
     }
   }
