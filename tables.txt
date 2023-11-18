@@ -1,0 +1,3 @@
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.001898	       0.000463	         257198	              0	              0	         228220	            640	            480	            227	            119
+# FOUND (275,70)

@@ -1,0 +1,30 @@
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.011803	       0.002915	        1679474	              0	              0	        1665993	           1600	           1200	            100	            100
+# FOUND (750,505)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.009683	       0.002400	        2160000	              0	              0	        1080001	           1600	           1200	           1200	            900
+# FOUND (0,0)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.016321	       0.004035	        3516212	              0	              0	        1758107	           1600	           1200	           1513	           1162
+# FOUND (0,0)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.017263	       0.004294	        3840000	              0	              0	        1920001	           1600	           1200	           1600	           1200
+# FOUND (0,0)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.011053	       0.002756	        1487550	              0	              0	        1444976	           1600	           1200	            200	            200
+# FOUND (700,500)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.009305	       0.002320	        1353276	              0	              0	        1262739	           1600	           1200	            300	            300
+# FOUND (650,450)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.007827	       0.001944	        1272856	              0	              0	        1022329	           1600	           1200	            500	            500
+# FOUND (550,350)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.011426	       0.002856	        1926600	              0	              0	        1444701	           1600	           1200	            800	            600
+# FOUND (800,600)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.004525	       0.001130	         960000	              0	              0	         480001	           1600	           1200	            800	            600
+# FOUND (0,0)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2
+       0.007989	       0.001993	        1462250	              0	              0	         971826	           1600	           1200	            800	            600
+# FOUND (400,300)
