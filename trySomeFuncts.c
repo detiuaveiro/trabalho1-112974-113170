@@ -105,3 +105,37 @@ void ImageBlur(Image img, int dx, int dy)
     ImagePaste(img, 0, 0, img2);
     ImageDestroy(&img2);
 }
+
+/// ORIGINAL
+// TODO MELHORAS POSSIVEIS, ALGORITMO COM HASH FUNCTION E MEMOIZACAO E ENCONTRAR TODAS AS SUBMATRIZES
+
+int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
+{ ///
+    assert(img1 != NULL);
+    assert(img2 != NULL);
+    // Insert your code here!
+    ImageInit();
+    InstrReset(); // reset to zero
+    int w = img1->width;
+    int h = img1->height;
+    int w2 = img2->width;
+    int h2 = img2->height;
+
+    for (int i = 0; i < w - w2 + 1; i++)
+    {
+        for (int j = 0; j < h - h2 + 1; j++)
+        {
+            InstrCount[3]++;
+            if (ImageMatchSubImage(img1, i, j, img2))
+            {
+                *px = i;
+                *py = j;
+                InstrPrint();
+
+                return 1;
+            }
+        }
+    }
+    InstrPrint();
+    return 0;
+}

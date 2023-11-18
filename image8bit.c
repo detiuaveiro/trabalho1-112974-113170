@@ -148,9 +148,13 @@ void ImageInit(void)
   InstrCalibrate();
   InstrName[0] = "pixmem"; // InstrCount[0] will count pixel array acesses
   // Name other counters here...
-  InstrName[1] = "adds or subs";
+  InstrName[1] = "addsOrSubs";
   InstrName[2] = "divisions";
   InstrName[3] = "comparisons";
+  InstrName[4] = "width";
+  InstrName[5] = "height";
+  InstrName[6] = "width2";
+  InstrName[7] = "height2";
 }
 
 /// AUX FUNCTIONS
@@ -693,6 +697,7 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2)
 /// Searches for img2 inside img1.
 /// If a match is found, returns 1 and matching position is set in vars (*px, *py).
 /// If no match is found, returns 0 and (*px, *py) are left untouched.
+
 int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 { ///
   assert(img1 != NULL);
@@ -704,6 +709,10 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   int h = img1->height;
   int w2 = img2->width;
   int h2 = img2->height;
+  InstrCount[4] = w;
+  InstrCount[5] = h;
+  InstrCount[6] = w2;
+  InstrCount[7] = h2;
 
   for (int i = 0; i < w - w2 + 1; i++)
   {
@@ -723,6 +732,7 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   InstrPrint();
   return 0;
 }
+
 // fim TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Aux functions
 
