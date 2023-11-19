@@ -155,6 +155,8 @@ void ImageInit(void)
   InstrName[5] = "height";
   InstrName[6] = "width2";
   InstrName[7] = "height2";
+  InstrName[8] = "dx";
+  InstrName[9] = "dy";
 }
 
 /// AUX FUNCTIONS
@@ -662,9 +664,6 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
 
 // inicio TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Blend the pixel values using the specified alpha value.
-// The formula used is: new_pixel = pixel * alpha + old_pixel * (1 - alpha)
-// where old_pixel is the pixel value at the corresponding position in img1.
 //
 /// Compare an image to a subimage of a larger image.
 /// Returns 1 (true) if img2 matches subimage of img1 at pos (x, y).
@@ -697,6 +696,8 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2)
 /// Searches for img2 inside img1.
 /// If a match is found, returns 1 and matching position is set in vars (*px, *py).
 /// If no match is found, returns 0 and (*px, *py) are left untouched.
+
+// preciso de fazer a analise formal...
 
 int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 { ///
@@ -791,14 +792,19 @@ int **sumTable(Image img)
 /// Each pixel is substituted by the mean of the pixels in the rectangle
 /// [x-dx, x+dx]x[y-dy, y+dy].
 /// The image is changed in-place.
-void ImageBlur(Image img, int dx, int dy)
+void ImageBlurPERFETC(Image img, int dx, int dy)
 { ///
   // Insert your code here!
   assert(img != NULL);
   int w = img->width;
   int h = img->height;
   ImageInit();
-  InstrReset(); // reset to zero
+  // InstrName[3] = "index";
+
+  InstrCount[4] = w;
+  InstrCount[5] = h;
+  InstrCount[8] = dx;
+  InstrCount[9] = dy;
   int **table = sumTable(img);
   // FILE *fp;
   // FILE *fp1;
@@ -833,6 +839,8 @@ void ImageBlur(Image img, int dx, int dy)
   {
     for (int j = 0; j < h; j++)
     {
+      // InstrCount[3] = i * img->width + j;
+
       int x0 = (i - dx - 1 < 0) ? 0 : i - dx - 1;
       int x1 = (i + dx >= w) ? w - 1 : i + dx;
       int y0 = (j - dy - 1 < 0) ? 0 : j - dy - 1;
@@ -842,6 +850,8 @@ void ImageBlur(Image img, int dx, int dy)
       InstrCount[1] += 3;
 
       double mean = (double)(sum) / (((x1 - x0) * (y1 - y0)));
+
+      InstrCount[2]++;
 
       mean = myRound(mean);
       ImageSetPixel(img2, i, j, mean);
@@ -861,3 +871,55 @@ void ImageBlur(Image img, int dx, int dy)
 
 /// OPTIMIZING BLUR FUNCTION
 /// https://www.youtube.com/watch?v=C_zFhWdM4ic
+
+void ImageBlur(Image img, int dx, int dy)
+{ ///
+  // Insert your code here!
+  assert(img != NULL);
+  int w = img->width;
+  int h = img->height;
+  // i want to use sumtable
+  Image img2 = ImageCreate(w, h, img->maxval);
+  // FINALMENTE ENTENDI O QUE SER BLUR
+  /// https://datacarpentry.org/image-processing/06-blurring.html
+  // i love matrixes
+  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
+  InstrName[0] = "adds";
+  InstrName[1] = "divisions";
+  InstrCalibrate(); // Call once, to measure CTU
+  InstrReset();     // reset to zero
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+
+      // uint8 pixel = ImageGetPixel(img, i, j);
+      double mean = 0;
+      int count = 0;
+
+      for (int k = i - dx; k <= i + dx; k++)
+      {
+
+        for (int l = j - dy; l <= j + dy; l++)
+        {
+          if (ImageValidPos(img, k, l))
+          {
+
+            mean += ImageGetPixel(img, k, l);
+            count++;
+            InstrCount[0] += 2;
+          }
+        }
+      }
+      mean /= (count);
+      InstrCount[1] += 1;
+
+      mean = myRound(mean);
+      ImageSetPixel(img2, i, j, mean);
+    }
+  }
+  InstrPrint();
+
+  ImagePaste(img, 0, 0, img2);
+  ImageDestroy(&img2);
+}

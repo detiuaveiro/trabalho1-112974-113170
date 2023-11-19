@@ -63,3 +63,9 @@ end
 ```
 
 > **NOTA MUITO IMPORTANTE** PARA COMPARAR OS RESULTADOS COM O TAMANHO DAS IMAGENS BASTA CALCULAR W*H PARA SABER O NUMERO TOTAL DE PIXEIS ISSO E QUE INTERESSA---> PYTHOOOON
+
+> Decidir se uso os que começam no topo esquerdo ou no bottom right ou ambos? (acho que ambos) assim da o average case
+> continuo com problemas na imglocate pq nao sei como analisar que imagens devo usar 
+> teoricamente eu sei que aquilo tem complexidade O(n^2) mas nao sei como fazer o teste
+> **BLUR ESTA PERFEITO** ESTA LINEAR COMO SE QUERIA FALTA FAZER A ANALISE DE COMPLEXIDADE FORMAL
+> **BLUR ANTIGO** VOU FAZER AGORA
