@@ -1,0 +1,9 @@
+locate = readtable("tables/LocateTable.csv");
+
+blurPerfect = readtable("tables/BlurTablePERFECT.csv");
+
+blurBad = readtable("tables/BlurTableBAD.csv");
+
+adds = cast(blurBad(:,"addsOrSubs"),table);
+numPixels = blurBad(:,"numPixelsOrig");
+plot(numPixels,adds)

@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 
 lines = []
 counter = 0
-filename = "./tables/LocateTable1.txt"
+filename = "./tables/LocateTable4.txt"
 mapStr = {"\t": "", " ": ""}
 with open(filename, "r") as file:
     # lines.append(file.readline())
@@ -133,7 +133,7 @@ df["index"] = df["X"] * df["width"] + df["Y"]
 # plt.show()
 
 df = df.sort_values(by=["index"])
-print(df)
+# print(df)
 
 
 df.to_csv("./tables/LocateTable.csv")
@@ -148,11 +148,11 @@ plt.ylabel("comps")
 plt.show()
 # NAO SEI O QUE FAZER
 
-plt.scatter(np.array(df["width2"]), np.array(df["comparisons"]), marker="o", color="b")
-plt.xlabel("width2")
-plt.ylabel("comps")
+# plt.scatter(np.array(df["width2"]), np.array(df["comparisons"]), marker="o", color="b")
+# plt.xlabel("width2")
+# plt.ylabel("comps")
 
-plt.show()
+# plt.show()
 
 ## to blurPerfect tables
 
@@ -197,6 +197,7 @@ dfBlurPerfect["dx"] = dfBlurPerfect["dx"].astype(int)
 dfBlurPerfect["dy"] = dfBlurPerfect["dy"].astype(int)
 dfBlurPerfect = dfBlurPerfect.sort_values(by=["width"], ascending=True)
 # print(dfBlurPerfect)
+dfBlurPerfect.to_csv("./tables/BlurTablePERFECT.csv")
 
 plt.scatter(
     dfBlurPerfect["numPixelsOrig"], dfBlurPerfect["addsOrSubs"], marker="o", color="b"
@@ -208,7 +209,7 @@ plt.show()
 ## to blurBad tables
 
 blurBadLines = []
-blurBadFile = "./tables/BlurTableBad.txt"
+blurBadFile = "./tables/BlurTableBAD.txt"
 mapStrBlurBad = {"\t": "", " ": ""}
 
 with open(blurBadFile, "r") as file:
@@ -238,7 +239,7 @@ dfBlurBad["width"] = dfBlurBad["width"].astype(int)
 dfBlurBad["width2"] = dfBlurBad["width2"].astype(int)
 dfBlurBad["time"] = dfBlurBad["time"].astype(float)
 dfBlurBad["height"] = dfBlurBad["height"].astype(int)
-dfBlurBad["adds"] = dfBlurBad["addsOrSubs"].astype(int)
+dfBlurBad["addsOrSubs"] = dfBlurBad["addsOrSubs"].astype(int)
 
 dfBlurBad["height2"] = dfBlurBad["height2"].astype(int)
 dfBlurBad["comparisons"] = dfBlurBad["comparisons"].astype(int)
@@ -248,7 +249,12 @@ dfBlurBad["dx"] = dfBlurBad["dx"].astype(int)
 dfBlurBad["dy"] = dfBlurBad["dy"].astype(int)
 dfBlurBad = dfBlurBad.sort_values(by=["width"], ascending=True)
 # print(dfBlurBad)
+dfBlurBad.to_csv("./tables/BlurTableBAD.csv")
 
-plt.scatter(dfBlurBad["numPixelsOrig"], dfBlurBad["adds"], marker="o", color="b")
+plt.scatter(dfBlurBad["numPixelsOrig"], dfBlurBad["addsOrSubs"], marker="o", color="b")
+plt.scatter(
+    dfBlurPerfect["numPixelsOrig"], dfBlurPerfect["addsOrSubs"], marker="o", color="r"
+)
+plt.title("Blur Perfect")
 plt.title("Blur Bad")
 plt.show()

@@ -792,7 +792,7 @@ int **sumTable(Image img)
 /// Each pixel is substituted by the mean of the pixels in the rectangle
 /// [x-dx, x+dx]x[y-dy, y+dy].
 /// The image is changed in-place.
-void ImageBlurPERFETC(Image img, int dx, int dy)
+void ImageBlur(Image img, int dx, int dy)
 { ///
   // Insert your code here!
   assert(img != NULL);
@@ -872,7 +872,7 @@ void ImageBlurPERFETC(Image img, int dx, int dy)
 /// OPTIMIZING BLUR FUNCTION
 /// https://www.youtube.com/watch?v=C_zFhWdM4ic
 
-void ImageBlur(Image img, int dx, int dy)
+void ImageBlurBad(Image img, int dx, int dy)
 { ///
   // Insert your code here!
   assert(img != NULL);
@@ -884,10 +884,13 @@ void ImageBlur(Image img, int dx, int dy)
   /// https://datacarpentry.org/image-processing/06-blurring.html
   // i love matrixes
   /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
-  InstrName[0] = "adds";
-  InstrName[1] = "divisions";
-  InstrCalibrate(); // Call once, to measure CTU
-  InstrReset();     // reset to zero
+  ImageInit();
+  // InstrName[3] = "index";
+
+  InstrCount[4] = w;
+  InstrCount[5] = h;
+  InstrCount[8] = dx;
+  InstrCount[9] = dy;
   for (int i = 0; i < w; i++)
   {
     for (int j = 0; j < h; j++)
@@ -907,12 +910,12 @@ void ImageBlur(Image img, int dx, int dy)
 
             mean += ImageGetPixel(img, k, l);
             count++;
-            InstrCount[0] += 2;
+            InstrCount[1] += 2;
           }
         }
       }
       mean /= (count);
-      InstrCount[1] += 1;
+      InstrCount[2] += 1;
 
       mean = myRound(mean);
       ImageSetPixel(img2, i, j, mean);
