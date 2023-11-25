@@ -748,3 +748,153 @@
 #          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
        0.513578	       0.216134	       92590544	              0	              0	       80206527	          10000	          10000	           3603	           3301	              0	              0
 # FOUND (5061,2554)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.188008	       0.077846	       32563360	              0	              0	       27429529	          10000	          10000	           8096	            591	              0	              0
+# FOUND (1184,6408)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.515195	       0.208527	       83239608	              0	              0	       68939451	          10000	          10000	           6490	           2181	              0	              0
+# FOUND (3493,4386)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.289251	       0.120641	       48879396	              0	              0	       46365375	          10000	          10000	           1485	           1261	              0	              0
+# FOUND (2508,5756)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.473902	       0.195868	       77697376	              0	              0	       68637246	          10000	          10000	           4569	           1958	              0	              0
+# FOUND (3703,5328)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.767548	       0.324581	      114697716	              0	              0	      111726864	          10000	          10000	           1375	           1360	              0	              0
+# FOUND (6293,192)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.768733	       0.304960	      115738796	              0	              0	      112454575	          10000	          10000	            906	           3569	              0	              0
+# FOUND (8486,3224)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.712917	       0.287077	      104608884	              0	              0	      104337164	          10000	          10000	            824	             87	              0	              0
+# FOUND (5248,4049)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.434345	       0.170991	       74586194	              0	              0	       67875901	          10000	          10000	           2564	           2286	              0	              0
+# FOUND (3964,543)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.134166	       0.055575	       23020548	              0	              0	       20174407	          10000	          10000	           6941	            394	              0	              0
+# FOUND (901,8225)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.571548	       0.237571	       88594852	              0	              0	       49901576	          10000	          10000	           4567	           8426	              0	              0
+# FOUND (3558,299)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.012511	       0.005239	        3146456	              0	              0	        2007752	          10000	          10000	            324	           3502	              0	              0
+# FOUND (66,5589)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.537016	       0.227787	       84040120	              0	              0	       81830213	          10000	          10000	           1054	           1168	              0	              0
+# FOUND (4506,8654)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.332951	       0.102761	       52977320	              0	              0	       52842239	          10000	          10000	             56	            821	              0	              0
+# FOUND (2870,6978)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.171180	       0.068059	       26569338	              0	              0	       26466723	          10000	          10000	             62	            249	              0	              0
+# FOUND (1351,7101)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.675442	       0.285393	      109223320	              0	              0	       55189517	          10000	          10000	           8447	           6380	              0	              0
+# FOUND (159,2117)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.081259	       0.034757	       15227014	              0	              0	       12389341	          10000	          10000	           8332	            332	              0	              0
+# FOUND (493,9016)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.480305	       0.199087	       80035714	              0	              0	       50532835	          10000	          10000	           6554	           4471	              0	              0
+# FOUND (1901,2447)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.386870	       0.163038	       61674890	              0	              0	       57378371	          10000	          10000	           6936	            619	              0	              0
+# FOUND (2828,8629)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.198221	       0.084383	       33646054	              0	              0	       29066788	          10000	          10000	           3943	           1102	              0	              0
+# FOUND (1375,7635)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.623225	       0.263321	      107570190	              0	              0	      104314250	          10000	          10000	            776	           3214	              0	              0
+# FOUND (7444,6726)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.319898	       0.136237	       59276440	              0	              0	       34030800	          10000	          10000	           7280	           3369	              0	              0
+# FOUND (662,2195)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.638027	       0.269466	       96563406	              0	              0	       94920180	          10000	          10000	           2120	            252	              0	              0
+# FOUND (4783,9009)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.920459	       0.367142	      116549058	              0	              0	      115684012	          10000	          10000	             19	           1449	              0	              0
+# FOUND (6712,8458)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.669620	       0.274325	      110853678	              0	              0	      106853352	          10000	          10000	           2448	           1189	              0	              0
+# FOUND (5835,8492)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.647879	       0.262275	       98573830	              0	              0	       97609314	          10000	          10000	            651	           1250	              0	              0
+# FOUND (5521,8127)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.702433	       0.284583	      115893370	              0	              0	      113170135	          10000	          10000	            789	           1963	              0	              0
+# FOUND (6870,2389)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.172982	       0.072086	       31518830	              0	              0	       17050127	          10000	          10000	           4309	           3324	              0	              0
+# FOUND (193,2050)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       1.227607	       0.482779	      169779388	              0	              0	      169095566	          10000	          10000	            359	            670	              0	              0
+# FOUND (9024,2927)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.645018	       0.267621	      106539756	              0	              0	       99185036	          10000	          10000	           4057	           1796	              0	              0
+# FOUND (5595,8182)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.462062	       0.191622	       78466634	              0	              0	       75231161	          10000	          10000	            926	           3493	              0	              0
+# FOUND (5531,2095)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.086031	       0.035636	       15008340	              0	              0	       11615267	          10000	          10000	           3906	            855	              0	              0
+# FOUND (449,4542)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.362723	       0.153504	       58110194	              0	              0	       57349435	          10000	          10000	           1549	            120	              0	              0
+# FOUND (2863,5034)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       1.185813	       0.503619	      181343532	              0	              0	      180612454	          10000	          10000	            331	            657	              0	              0
+# FOUND (9625,4687)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.718817	       0.305253	      123190194	              0	              0	      120458985	          10000	          10000	            661	           3391	              0	              0
+# FOUND (8905,1837)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       1.180458	       0.498313	      180645884	              0	              0	      179314478	          10000	          10000	            595	            318	              0	              0
+# FOUND (9190,4765)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.111551	       0.046970	       23405906	              0	              0	       16405405	          10000	          10000	           1364	           5089	              0	              0
+# FOUND (957,1667)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.328065	       0.139620	       55854954	              0	              0	       45698632	          10000	          10000	           6730	           1458	              0	              0
+# FOUND (2080,1714)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.150315	       0.063112	       30203592	              0	              0	       21658813	          10000	          10000	           8569	            965	              0	              0
+# FOUND (725,5916)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.088725	       0.037437	       20043072	              0	              0	       16613400	          10000	          10000	            832	           3961	              0	              0
+# FOUND (1091,2223)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.482634	       0.197000	       77599460	              0	              0	       74044814	          10000	          10000	           5256	            669	              0	              0
+# FOUND (3776,7451)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.898250	       0.374175	      151484484	              0	              0	      150065099	          10000	          10000	            189	           1502	              0	              0
+# FOUND (8744,7600)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.018391	       0.007761	        3108936	              0	              0	        2838503	          10000	          10000	            919	            273	              0	              0
+# FOUND (131,9666)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.425325	       0.177947	       74228574	              0	              0	       67066248	          10000	          10000	           1195	           5591	              0	              0
+# FOUND (6791,3650)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.243632	       0.101004	       39494510	              0	              0	       35439131	          10000	          10000	           5659	            699	              0	              0
+# FOUND (1686,8703)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.165774	       0.070177	       26789224	              0	              0	       23805416	          10000	          10000	           4802	            545	              0	              0
+# FOUND (1100,9203)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.154926	       0.065024	       27776144	              0	              0	       20531667	          10000	          10000	           2475	           2840	              0	              0
+# FOUND (927,5347)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.371217	       0.148656	       62058510	              0	              0	       55996524	          10000	          10000	           3542	           1550	              0	              0
+# FOUND (2954,3014)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       1.129963	       0.426498	      171226646	              0	              0	      169470683	          10000	          10000	            645	            804	              0	              0
+# FOUND (9117,8310)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       0.267453	       0.110718	       39372832	              0	              0	       38499410	          10000	          10000	            194	            320	              0	              0
+# FOUND (1943,2810)
+#          time	        caltime	         pixmem	     addsOrSubs	      divisions	    comparisons	          width	         height	         width2	        height2	             dx	             dy
+       1.154573	       0.496108	      175849440	              0	              0	      174849071	          10000	          10000	            429	            515	              0	              0
+# FOUND (9163,4132)

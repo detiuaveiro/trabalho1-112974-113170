@@ -258,3 +258,28 @@ plt.scatter(
 plt.title("Blur Perfect")
 plt.title("Blur Bad")
 plt.show()
+
+
+"""
+Sum[Sum[Sum[Sum[2,{l,0,Subscript[h,2]-1}],{k,0,Subscript[w,2]-1}],{j,0,h-Subscript[h,2]-1}],{i,0,w-Subscript[w,2]-1}] = 2(h-Subscript[h,2])*Subscript[h,2](w-Subscript[w,2])* Subscript[w,2]
+
+"""
+
+
+# %%
+
+
+n = 1
+lines = []
+with open("./tables/LocateTable.csv", "r") as file:
+    for line in file:
+        if not (n % 2 == 0):
+            lines.append(line)
+        n += 1
+
+
+with open("./tables/LocateTableSemLixo.csv", "w") as file:
+    for line in lines:
+        file.write(line)
+
+# %%
