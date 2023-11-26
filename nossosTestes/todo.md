@@ -63,7 +63,7 @@ end
 ./imageTool nossosTestes/airfield-05_640x480_CROPPED.pgm pgm/medium/airfield-05_640x480.pgm locate
 ```
 
-> **NOTA MUITO IMPORTANTE** PARA COMPARAR OS RESULTADOS COM O TAMANHO DAS IMAGENS BASTA CALCULAR W\*H PARA SABER O NUMERO TOTAL DE PIXEIS ISSO E QUE INTERESSA---> PYTHOOOON
+> **NOTA MUITO IMPORTANTE** PARA COMPARAR OS RESULTADOS COM O TAMANHO DAS IMAGENS BASTA CALCULAR W \* H PARA SABER O NUMERO TOTAL DE PIXEIS ISSO E QUE INTERESSA---> PYTHOOOON
 
 > Decidir se uso os que começam no topo esquerdo ou no bottom right ou ambos? (acho que ambos) assim da o average case
 > continuo com problemas na imglocate pq nao sei como analisar que imagens devo usar
@@ -112,3 +112,28 @@ $$
 $$
 \sum_{i=0}^{w - w_2}  \sum_{j=0}^{h - h_2} \left( 1 + \sum_{k=0}^{w_2 - 1}  \sum_{l=0}^{h_2 - 1} 1  \right) = (h-h_2+1)(w-w_2+1)(h_2w_2+1)
 $$
+
+- Blur
+  - > Colocar os somatorios
+
+imagens de tamanho diferente
+blur dx = 7 dy = 7
+bom e o mau
+LINEAR EM AO NUMERO DE PIXEIS
+
+A ABORDAGEM DO SUMTABLE SOMA CUM
+
+plot3(blurBad.dx(1:7).\* blurBad.dy(1:7), blurBad.numPixelsOrig(1:7),blurBad.addsOrSubs(1:7),'.-', 'MarkerSize', 25);
+
+plot3(blurBad.dx(8:14).\* blurBad.dy(8:14), blurBad.numPixelsOrig(8:14),blurBad.addsOrSubs(8:14),'.-', 'MarkerSize', 25);
+
+plot3(blurBad.dx(15:21).\* blurBad.dy(15:21), blurBad.numPixelsOrig(15:21),blurBad.addsOrSubs(15:21),'.-', 'MarkerSize', 25);
+
+plot3(blurBad.dx(22:28).\* blurBad.dy(22:28), blurBad.numPixelsOrig(22:28),blurBad.addsOrSubs(22:28),'.-', 'MarkerSize', 25);
+
+**BLUR GOOD**
+(h-2) + (w+2) + Sum[Sum[3,{j,1,h-1}],{i,1,w-1}]+ Sum[Sum[4,{l,0,h-1}],{k,0,w-1}] = (4 h w + 3 (h - 1) (w - 1) + h + w) = 7 h w - 2 h - 2 w + 3
+
+**BLUR BAD**
+
+Sum[Sum[1 +\(40)Sum[Sum[2,{l,j-dy,j+dy}],{k,i-dx,i+dx}]\(41),{j,0,h-1}],{i,0,w-1}]= $8 h w d_x d_y + 4 h w d_x + 4 h w d_y + 3 h w$

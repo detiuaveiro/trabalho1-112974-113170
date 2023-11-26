@@ -9,7 +9,7 @@
 # get opts
 ## global
 original="VERYBIG_10000x10000.pgm"
-while getopts ":l:cdbr" opt; do
+while getopts ":l:cdbrg" opt; do
     case $opt in
         l)
             imgs=$(ls $OPTARG/VERYBIG*)
@@ -137,6 +137,30 @@ while getopts ":l:cdbr" opt; do
             #         i=$((i+1))
             #     done
             # done
+            
+            
+            
+        ;;
+        g)
+            # | dx\*dy | small | large | medium |
+            # | :----: | :---- | :---: | -----: |
+            # |   3    | x     |   x   |      x |
+            # |   7    | x     |   x   |      x |
+            # |   9    | z     |   x   |      x |
+            # |   11   | x     |   x   |      x |
+            
+            small="../pgm/small/art4_300x300.pgm"
+            medium="../pgm/medium/mandrill_512x512.pgm"
+            big="../pgm/large/einstein_940x940.pgm"
+            big2="../pgm/large/ireland_03_1600x1200.pgm"
+            arr=($small $medium $big $big2)
+            sqs=(3 7 9 11 13 15 17)
+            for i in "${arr[@]}"; do
+                for sq in "${sqs[@]}"; do
+                    \../imageTool $i blur $sq,$sq >>tables/BlurTableBadStor.txt
+                done
+            done
+            
             
             
             

@@ -10,11 +10,11 @@
 /// 2013, 2023
 
 // Student authors (fill in below):
-// NMec: 112974  Name: André Pedro Ribeiro
-// NMec: 113170  Name: Daniel Batista Ramos
+// NMec: 112974  Name: André Pedro Ribeiro <andrepedroribeiro@ua.pt>
+// NMec: 113170  Name: Daniel Batista Ramos <dbramos@ua.pt>
 //
 //
-// Date: 23/11/2023
+// Date: 26/11/2023
 //
 
 #include "image8bit.h"
@@ -160,14 +160,65 @@ void ImageInit(void)
 }
 
 /// AUX FUNCTIONS
-/// TODO COMENTAR E DIZER QUE SÃO AS NOSSAS FUNCOES
 // myRound function
 int myRound(double x)
 {
-  InstrCount[1]++;
   return (int)(x + 0.5);
 }
+// Sum table is an approach to memoization, it calculates the cumulative sum of all the pixels in an image
+int **sumTable(Image img)
+{
+  int w = img->width;
+  int h = img->height;
+  int **table = (int **)malloc((w + 1) * sizeof(int *));
+  if (table == NULL)
+  {
+    return NULL;
+  }
 
+  for (int i = 0; i < w + 1; i++)
+  {
+    table[i] = (int *)malloc((h + 1) * sizeof(int));
+
+    if (table[i] == NULL)
+    {
+      for (int j = 0; j < i; j++)
+      {
+        free(table[j]);
+      }
+      free(table);
+      return NULL;
+    }
+  }
+
+  for (int i = 0; i < w; i++)
+  {
+    for (int j = 0; j < h; j++)
+    {
+      int pixelValue = ImageGetPixel(img, i, j);
+
+      table[i][j] = pixelValue;
+
+      if (i > 0)
+      {
+        table[i][j] += table[i - 1][j];
+        InstrCount[1]++;
+      }
+      if (j > 0)
+      {
+        table[i][j] += table[i][j - 1];
+        InstrCount[1]++;
+      }
+      if (i > 0 && j > 0)
+      {
+        table[i][j] -= table[i - 1][j - 1];
+        InstrCount[1]++;
+      }
+    }
+  }
+
+  return table;
+}
 // Macros to simplify accessing instrumentation counters:
 #define PIXMEM InstrCount[0]
 // Add more macros here...
@@ -199,7 +250,6 @@ Image ImageCreate(int width, int height, uint8 maxval)
   if (i == NULL)
   {
     return NULL;
-    // TODO global errno???
   }
 
   i->height = height;
@@ -209,6 +259,12 @@ Image ImageCreate(int width, int height, uint8 maxval)
   // allocate memory for array pixel with the size of width times heigth
   // unsigned int eigth
   uint8 *pixel = (uint8 *)malloc(sizeof(uint8) * width * height);
+
+  if (pixel == NULL)
+  {
+    free(i);
+    return NULL;
+  }
 
   i->pixel = pixel;
 
@@ -228,10 +284,7 @@ void ImageDestroy(Image *imgp)
 
   free((*imgp)->pixel);
   free(*imgp);
-  // if(*imgp == NULL){
-  //   printf("erro 2");
-  //   // TODO ERROR
-  // }
+
   *imgp = NULL;
 }
 
@@ -350,7 +403,6 @@ int ImageMaxval(Image img)
 /// On return,
 /// *min is set to the minimum gray level in the image,
 /// *max is set to the maximum.
-// TODO CHECK
 void ImageStats(Image img, uint8 *min, uint8 *max)
 { ///
   assert(img != NULL);
@@ -444,7 +496,6 @@ void ImageSetPixel(Image img, int x, int y, uint8 level)
 /// Transform image to negative image.
 /// This transforms dark pixels to light pixels and vice-versa,
 /// resulting in a "photographic negative" effect.
-// TODO CHECK
 void ImageNegative(Image img)
 { ///
   assert(img != NULL);
@@ -456,6 +507,7 @@ void ImageNegative(Image img)
   {
     // To negate a pixel is similar to negate a probability…
     // The difference between 255(PixMax) and any given value is equal to its negative, in uint8
+
     uint8 pixel = img->pixel[i];
     img->pixel[i] = PixMax - pixel;
     PIXMEM += 2;
@@ -465,7 +517,6 @@ void ImageNegative(Image img)
 /// Apply threshold to image.
 /// Transform all pixels with level<thr to black (0) and
 /// all pixels with level>=thr to white (maxval).
-// TODO CHECK
 void ImageThreshold(Image img, uint8 thr)
 { ///
   assert(img != NULL);
@@ -483,16 +534,13 @@ void ImageThreshold(Image img, uint8 thr)
 /// Multiply each pixel level by a factor, but saturate at maxval.
 /// This will brighten the image if factor>1.0 and
 /// darken the image if factor<1.0.
-// TODO CHECK
 
 void ImageBrighten(Image img, double factor)
 { ///
   assert(img != NULL);
-  // ? assert (factor >= 0.0);
+  assert(factor >= 0.0);
   // Insert your code here!
   int tamanhoPixelArray = (img->height) * (img->width);
-
-  // this function is not working
 
   for (int i = 0; i < tamanhoPixelArray; i++)
   {
@@ -645,7 +693,6 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   // Insert your code here!
   int w = img2->width;
   int h = img2->height;
-  // devo usar o image paste? ou fazer um for?
   for (int i = 0; i < w; i++)
   {
     for (int j = 0; j < h; j++)
@@ -662,9 +709,6 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   }
 }
 
-// inicio TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//
 /// Compare an image to a subimage of a larger image.
 /// Returns 1 (true) if img2 matches subimage of img1 at pos (x, y).
 /// Returns 0, otherwise.
@@ -696,8 +740,6 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2)
 /// Searches for img2 inside img1.
 /// If a match is found, returns 1 and matching position is set in vars (*px, *py).
 /// If no match is found, returns 0 and (*px, *py) are left untouched.
-
-// preciso de fazer a analise formal...
 
 int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 { ///
@@ -733,59 +775,6 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   InstrPrint();
   return 0;
 }
-
-// fim TODO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Aux functions
-
-/// sum table
-/// aproach to memoization
-/// this functions calculates the sum of all the pixels in a rectangle
-/// of the image
-// TODO garantir a segurança da função
-// COMO DEVEMOS FAZER O TESTING DOS ERROS?
-int **sumTable(Image img)
-{
-  int w = img->width;
-  int h = img->height;
-  // aumentar segurnaça do malloc
-  int **table = (int **)malloc((w + 1) * sizeof(int *));
-
-  for (int i = 0; i < w + 1; i++)
-  {
-    table[i] = (int *)malloc((h + 1) * sizeof(int));
-  }
-
-  for (int i = 0; i < w; i++)
-  {
-    for (int j = 0; j < h; j++)
-    {
-      int pixelValue = ImageGetPixel(img, i, j);
-
-      // Adicione o valor do pixel atual
-      table[i][j] = pixelValue;
-
-      // Adicione os valores acumulados à esquerda e acima (se aplicável)
-      if (i > 0)
-      {
-        table[i][j] += table[i - 1][j];
-        InstrCount[1]++;
-      }
-      if (j > 0)
-      {
-        table[i][j] += table[i][j - 1];
-        InstrCount[1]++;
-      }
-      if (i > 0 && j > 0)
-      {
-        table[i][j] -= table[i - 1][j - 1];
-        InstrCount[1]++;
-      }
-    }
-  }
-
-  return table;
-}
-
 /// Filtering
 
 /// Blur an image by a applying a (2dx+1)x(2dy+1) mean filter.
@@ -799,41 +788,14 @@ void ImageBlur(Image img, int dx, int dy)
   int w = img->width;
   int h = img->height;
   ImageInit();
-  // InstrName[3] = "index";
 
   InstrCount[4] = w;
   InstrCount[5] = h;
   InstrCount[8] = dx;
   InstrCount[9] = dy;
   int **table = sumTable(img);
-  // FILE *fp;
-  // FILE *fp1;
 
-  // fp = fopen("file.txt", "w");
-  // fp1 = fopen("file2.txt", "w");
-  // for (int i = 0; i < w; i++)
-  // { // header
-  //   for (int j = 0; j < h; j++)
-  //   {
-
-  //     // put in a file
-  //     fprintf(fp, "%d ", table[i][j]);
-  //     fprintf(fp1, "%d ", ImageGetPixel(img, i, j));
-  //     // printf("%d ", table[i][j]);
-  //   }
-
-  //   fprintf(fp, "%s", "\n");
-  //   fprintf(fp1, "%s", "\n");
-  // }
-
-  // fclose(fp);
-  // fclose(fp1);
   Image img2 = ImageCreate(w, h, img->maxval);
-
-  // FINALMENTE ENTENDI O QUE SER BLUR
-  /// https://datacarpentry.org/image-processing/06-blurring.html
-  // i love matrixes
-  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
 
   for (int i = 0; i < w; i++)
   {
@@ -862,15 +824,12 @@ void ImageBlur(Image img, int dx, int dy)
 
   ImagePaste(img, 0, 0, img2);
   ImageDestroy(&img2);
-  // Libere a memória alocada para a tabela de soma
-  free(table[0]);
+  for (int i = 0; i < w + 1; i++)
+  {
+    free(table[i]);
+  }
   free(table);
 }
-
-//////
-
-/// OPTIMIZING BLUR FUNCTION
-/// https://www.youtube.com/watch?v=C_zFhWdM4ic
 
 void ImageBlurBad(Image img, int dx, int dy)
 { ///
@@ -878,14 +837,8 @@ void ImageBlurBad(Image img, int dx, int dy)
   assert(img != NULL);
   int w = img->width;
   int h = img->height;
-  // i want to use sumtable
   Image img2 = ImageCreate(w, h, img->maxval);
-  // FINALMENTE ENTENDI O QUE SER BLUR
-  /// https://datacarpentry.org/image-processing/06-blurring.html
-  // i love matrixes
-  /// https://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
   ImageInit();
-  // InstrName[3] = "index";
 
   InstrCount[4] = w;
   InstrCount[5] = h;
@@ -896,7 +849,6 @@ void ImageBlurBad(Image img, int dx, int dy)
     for (int j = 0; j < h; j++)
     {
 
-      // uint8 pixel = ImageGetPixel(img, i, j);
       double mean = 0;
       int count = 0;
 

@@ -134,7 +134,7 @@ df["index"] = df["X"] * df["width"] + df["Y"]
 
 df = df.sort_values(by=["index"])
 # print(df)
-
+print(len(df["numPixelsOrig"]))
 
 df.to_csv("./tables/LocateTable.csv")
 # print(df["comparisons"])
@@ -157,7 +157,7 @@ plt.show()
 ## to blurPerfect tables
 
 blurPerfectLines = []
-blurPerfectFile = "./tables/BlurTablePERFECT.txt"
+blurPerfectFile = "./tables/BlurTableStor.txt"
 mapStrBlurPerfect = {"\t": "", " ": ""}
 
 with open(blurPerfectFile, "r") as file:
@@ -197,7 +197,7 @@ dfBlurPerfect["dx"] = dfBlurPerfect["dx"].astype(int)
 dfBlurPerfect["dy"] = dfBlurPerfect["dy"].astype(int)
 dfBlurPerfect = dfBlurPerfect.sort_values(by=["width"], ascending=True)
 # print(dfBlurPerfect)
-dfBlurPerfect.to_csv("./tables/BlurTablePERFECT.csv")
+dfBlurPerfect.to_csv("./tables/BlurTableStorPerfect.csv")
 
 plt.scatter(
     dfBlurPerfect["numPixelsOrig"], dfBlurPerfect["addsOrSubs"], marker="o", color="b"
@@ -209,7 +209,7 @@ plt.show()
 ## to blurBad tables
 
 blurBadLines = []
-blurBadFile = "./tables/BlurTableBAD.txt"
+blurBadFile = "./tables/BlurTableBadStor.txt"
 mapStrBlurBad = {"\t": "", " ": ""}
 
 with open(blurBadFile, "r") as file:
@@ -249,7 +249,7 @@ dfBlurBad["dx"] = dfBlurBad["dx"].astype(int)
 dfBlurBad["dy"] = dfBlurBad["dy"].astype(int)
 dfBlurBad = dfBlurBad.sort_values(by=["width"], ascending=True)
 # print(dfBlurBad)
-dfBlurBad.to_csv("./tables/BlurTableBAD.csv")
+dfBlurBad.to_csv("./tables/BlurTableBADStor.csv")
 
 plt.scatter(dfBlurBad["numPixelsOrig"], dfBlurBad["addsOrSubs"], marker="o", color="b")
 plt.scatter(
@@ -266,20 +266,20 @@ Sum[Sum[Sum[Sum[2,{l,0,Subscript[h,2]-1}],{k,0,Subscript[w,2]-1}],{j,0,h-Subscri
 """
 
 
-# %%
+# # %%
 
 
-n = 1
-lines = []
-with open("./tables/LocateTable.csv", "r") as file:
-    for line in file:
-        if not (n % 2 == 0):
-            lines.append(line)
-        n += 1
+# n = 1
+# lines = []
+# with open("./tables/LocateTable.csv", "r") as file:
+#     for line in file:
+#         if not (n % 2 == 0):
+#             lines.append(line)
+#         n += 1
 
 
-with open("./tables/LocateTableSemLixo.csv", "w") as file:
-    for line in lines:
-        file.write(line)
+# with open("./tables/LocateTableSemLixo.csv", "w") as file:
+#     for line in lines:
+#         file.write(line)
 
-# %%
+# # %%
