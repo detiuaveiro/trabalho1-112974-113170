@@ -801,7 +801,6 @@ void ImageBlur(Image img, int dx, int dy)
   {
     for (int j = 0; j < h; j++)
     {
-      // InstrCount[3] = i * img->width + j;
 
       int x0 = (i - dx - 1 < 0) ? 0 : i - dx - 1;
       int x1 = (i + dx >= w) ? w - 1 : i + dx;
